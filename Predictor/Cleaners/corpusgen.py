@@ -8,7 +8,7 @@ with open('../../Data/rawdataset/CoronaTweetsLimpio3.csv', 'r', encoding="utf-8"
 
     rowCount = 0                #Contador de filas a agrupar
     rowCountTotal = 0           #Contador de filas totales del dataset original
-    Seconds = 10                #Cantidad de segundos del bloque de tiempo
+    Seconds = 180                #Cantidad de segundos del bloque de tiempo
     UnixGroup = 0               #Bloque de tiempo en formato Unix (son segundos)
 
     with open((f'../../Data/dataset/dataset_groupby_{Seconds}s.csv'), 'w', encoding="utf-8", newline='') as csv_obj_w:
