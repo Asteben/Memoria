@@ -18,10 +18,7 @@ def load_data ( inputPath ):
     return df1
 
 
-dataset_path = "dataset/dataset1h_5.csv"
-#dataset_path = "dataset/dataset1h_60.csv"
-#dataset_path = "dataset/dataset1h_180.csv"
-#dataset_path = "dataset/dataset1h_300.csv"
+dataset_path = "../Data/dataset/dataset_groupby_60s.csv"
 
 raw_dataset = load_data( dataset_path )
 dataset = raw_dataset.copy()
@@ -35,9 +32,10 @@ sample_rate = 0.8
 X_train = dataset["Unix"].iloc[:int(len_data*sample_rate)]
 Y_train = dataset["Quantity"].iloc[:int(len_data*sample_rate)]
 
+
 X_test = dataset["Unix"].iloc[int(len_data*sample_rate):]
 Y_test = dataset["Quantity"].iloc[int(len_data*sample_rate):]
-
+print(Y_train.head())
 train_series = np.array(Y_train).reshape((len(Y_train), 1))
 test_series = np.array(Y_test).reshape((len(Y_test), 1))
 

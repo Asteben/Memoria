@@ -47,14 +47,18 @@ ytest = df_test.labelnum
 
 
 
-cv = CountVectorizer()
+cv = TfidfVectorizer()
 xtrain_dtm = cv.fit_transform(xtrain)
 xtest_dtm=cv.transform(xtest)
 
-df=pd.DataFrame(xtrain_dtm.toarray(),columns=cv.get_feature_names())
-
-
+#df=pd.DataFrame(xtrain_dtm.toarray(),columns=cv.get_feature_names())
+'''
+from sklearn.neighbors import KNeighborsClassifier
+clf = KNeighborsClassifier(n_neighbors=500)
+clf.fit(xtrain_dtm, ytrain)
+'''
 clf = MultinomialNB().fit(xtrain_dtm,ytrain)
+
 predicted = clf.predict(xtest_dtm)
 
 
@@ -63,7 +67,7 @@ print('\n Confusion matrix')
 print(metrics.confusion_matrix(ytest,predicted))
 print('\n The value of Precision', metrics.precision_score(ytest,predicted,average='macro'))
 print('\n The value of Recall', metrics.recall_score(ytest,predicted,average='macro'))
-
+'''
 covid_data_pred = []
 earthquake_data_pred = []
 hurricane_data_pred = []
@@ -95,5 +99,5 @@ print(df_earthquake.iloc[:5])
 
 print('\n The tweets of hurricane are:')
 print(df_hurricane.iloc[:5])
-
+'''
 

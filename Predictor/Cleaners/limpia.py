@@ -1,11 +1,11 @@
 from csv import DictReader, DictWriter
 import time, datetime
 
-with open('../../Data/rawdataset/12MCoronaTweets.csv', 'r', encoding="utf-8") as csv_obj:
+with open('../../Data/rawdataset/harvey-irma-maria_hydrated.csv', 'r', encoding="utf-8") as csv_obj:
     csv = DictReader(x.replace('\0', '') for x in csv_obj)
     rowCount = 0
     rowCountClean = 0
-    with open('../../Data/rawdataset/CoronaTweetsLimpio4.csv', 'w', encoding="utf-8", newline='') as csv_obj_w:
+    with open('../../Data/rawdataset/HurricaneTweetsLimpio.csv', 'w', encoding="utf-8", newline='') as csv_obj_w:
         csvf = DictWriter(csv_obj_w, fieldnames = ['id', 'created_at', 'text', 'label'])
         #csvf.writerow(dict((fn,fn) for fn in csv.fieldnames))
         csvf.writeheader()
@@ -22,6 +22,7 @@ with open('../../Data/rawdataset/12MCoronaTweets.csv', 'r', encoding="utf-8") as
                 rowf.append(rowsplit[5])
                 rowjoin = ' '.join(rowf)
                 UnixTime = int((datetime.datetime.strptime(rowjoin, "%a %b %d %H:%M:%S %Y")).timestamp())
+                '''
                 resultado = []
                 llaves = ('corona', 'covid')
                 for coincidencia in llaves:
@@ -33,4 +34,6 @@ with open('../../Data/rawdataset/12MCoronaTweets.csv', 'r', encoding="utf-8") as
                     csvf.writerow({'id':rowCountClean, 'created_at':UnixTime, 'text': row['text'], 'label':'covid'})
                 else:
                     csvf.writerow({'id':rowCountClean, 'created_at':UnixTime, 'text': row['text'], 'label':'other'})
+                '''
+                csvf.writerow({'id':rowCountClean, 'created_at':UnixTime, 'text': row['text'], 'label':'hurricane'})
             print(f'RowCount:{rowCount}     RowCountClean:{rowCountClean}')
