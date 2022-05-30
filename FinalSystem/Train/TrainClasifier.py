@@ -14,7 +14,7 @@ corona_data['labelnum'] = corona_data.label.map({'covid':1,'other':0})
 earthquake_data['labelnum'] = earthquake_data.label.map({'earthquake': 2})
 hurricane_data['labelnum'] = hurricane_data.label.map({'hurricane':3})
 
-sample_train = 10000
+sample_train = 15000
 
 other_data_train = corona_data.loc[corona_data["labelnum"]==0,:][:sample_train]
 corona_data_train = corona_data.loc[corona_data["labelnum"]==1,:][:sample_train]
@@ -34,5 +34,5 @@ xtrain_dtm = cv.fit_transform(xtrain)
 
 clf = MultinomialNB().fit(xtrain_dtm,ytrain)
 
-joblib.dump(cv,'../Models/CountVc.pkl')
-joblib.dump(clf, '../Models/NaiveBayes-CountVc.pkl')
+joblib.dump(cv,'../Models/Tf-idf.pkl')
+joblib.dump(clf, '../Models/NaiveBayes-Tfidf.pkl')

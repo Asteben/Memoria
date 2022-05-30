@@ -30,10 +30,10 @@ print(len(df_test))
 xtest = df_test.text
 ytest = df_test.labelnum
 
-cv = joblib.load('Models/CountVc.pkl')
+cv = joblib.load('Models/Tf-idf.pkl')
 xtest_dtm=cv.transform(xtest)
 
-clf = joblib.load('Models/NaiveBayes-CountVc.pkl')
+clf = joblib.load('Models/NaiveBayes-Tfidf.pkl')
 predicted = clf.predict(xtest_dtm)
 
 
@@ -75,6 +75,7 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
 import matplotlib . pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
 
 print (tf.__version__)
 
@@ -134,26 +135,21 @@ def Predecir (sec, data_clas, data_test, modelo):
     test_generator = TimeseriesGenerator(test_series, test_series, length = look_back, sampling_rate = 1, stride = 1, batch_size = 10)
     test_predictions = modelo.predict(test_generator)
     '''
-    
     test_predictions = []
     #Select last n_input values from the train data
-    first_eval_batch =  np.array(GBy_data.tail(look_back)['Quantity'].tolist())
-    #reshape the data into LSTM required (#batch,#timesteps,#features)
+    #data_to_scaler = (np.array(GBy_data.tail(look_back)['Quantity'].tolist())).reshape(-1, 1)
+    #first_eval_batch =  scaler.transform(data_to_scaler)
+    first_eval_batch = np.array(GBy_data.tail(look_back)['Quantity'].tolist())
+    
     current_batch = np.reshape(first_eval_batch,(1, look_back, 1))
     for i in range(len(data_test.index)):
-    # get prediction, grab the exact number using the [0]
+    
         pred = modelo.predict(current_batch)[0]
-    # Add this prediction to the list
+    
         test_predictions.append(pred)
-    # The most critical part, update the (#batch,#timesteps,#features
-    # using np.append(
-    # current_batch[:        ,1:   ,:] ---------> read this as
-    # current_batch[no_change,1:end,no_change]
-    # (Do note the second part has the timesteps)
-    # [[pred]] need the double brackets as current_batch is a 3D array
-    # axis=1, remember we need to add to the second part i.e. 1st axis
         current_batch = np.append(current_batch[:,1:,:],[[pred]],axis=1)
-
+    
+    #test_predictions = scaler.inverse_transform(test_predictions)
     fig, ax = plt.subplots(1, 1, figsize=(15, 5))
     ax.plot(X_test,Y_test, lw=3, c='y', label='test data')
     ax.plot(X_test.iloc[look_back:],test_predictions, lw=3, c='r',linestyle = ':', label='predictions')
@@ -165,7 +161,8 @@ corona_GBy_data=pd.read_csv('Data/TestCorona-GBy60s.csv',names=['Unix','Quantity
 #hurricane_GBy_data=pd.read_csv('Data/TestHurricane-GBy60s.csv',names=['Unix','Quantity'])
 
 
-model_Corona = tf.keras.models.load_model('Models/Lstm-Corona-Gby60')
+model_Corona = tf.keras.models.load_model('Models/OldLSTMs/Lstm-Corona-Gby60')
+#scaler = joblib.load('Models/Corona-GBy60-scaler.pkl') 
 predict_covid = Predecir(60, df_covid, corona_GBy_data, model_Corona)
 '''
 model_Earthquake = tf.keras.models.load_model('Models/Lstm-Earthquake-Gby60')

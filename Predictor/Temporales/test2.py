@@ -1,15 +1,19 @@
 import numpy as np
-import matplotlib.pyplot as plt
-X_train = np.arange(0,100,0.5) 
-y_train = np.sin(X_train)
 
-X_test = np.arange(100,200,0.5) 
-y_test = np.sin(X_test)
-
-n_features = 1
-
-train_series = y_train.reshape((len(y_train), n_features))
-test_series  = y_test.reshape((len(y_test), n_features))
+X_train = np.arange(1,101,1) 
 
 print(X_train)
-print(X_test)
+
+len_data = len(X_train)
+test_predictions = []
+first_eval_batch = np.array(X_train[int(len_data - 20):])
+print(first_eval_batch)
+current_batch = np.reshape(first_eval_batch,(1, 20, 1))
+print(current_batch)
+for i in range(5):
+    pred = i
+    test_predictions.append(pred)
+    current_batch = np.append(current_batch[:,1:,:],[[[pred]]],axis=1)
+    print(current_batch)
+
+print(test_predictions)

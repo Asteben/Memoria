@@ -2,24 +2,24 @@ from csv import DictReader, DictWriter
 import time
 import datetime
 
-with open('../../Data/rawdataset/HurricaneTweetsLimpio.csv', 'r', encoding="utf-8") as csv_obj:
+with open('../../Data/rawdataset/CoronaTweetsLimpio4.csv', 'r', encoding="utf-8") as csv_obj:
     csv = DictReader(x.replace('\0', '') for x in csv_obj)
     csv = sorted(csv, key = lambda row: row['created_at'])      #Se ordena de manera ascendente en función de la fecha de los tweets
     rowTotal = sum(1 for row in csv) 
     print(f'RowTotal:{rowTotal}')
     rowCount = 0                #Contador de filas a agrupar
     rowCountTotal = 0           #Contador de filas totales del dataset original
-    Seconds = 60                #Cantidad de segundos del bloque de tiempo
+    Seconds = 600                #Cantidad de segundos del bloque de tiempo
     UnixGroup = 0               #Bloque de tiempo en formato Unix (son segundos)
 
-    with open((f'../../FinalSystem/Data/TestHurricane-GBy{Seconds}s.csv'), 'w', encoding="utf-8", newline='') as csv_obj_w:
+    with open((f'../../FinalSystem/Data/corona_full-GBy{Seconds}s.csv'), 'w', encoding="utf-8", newline='') as csv_obj_w:
         csvf = DictWriter(csv_obj_w, fieldnames = ['Unix', 'Quantity'])
         #csvf.writerow(dict((fn,fn) for fn in csv.fieldnames))
         #csvf.writeheader()
 
         for  row in csv:
             rowCountTotal = rowCountTotal + 1
-            if rowCountTotal >= rowTotal*0.8:
+            if True == True :  #if rowCountTotal >= rowTotal*0.8:
                 rowCount = rowCount + 1
                 
                 Unixinrow = int(row['created_at'])          #Fecha en segundos del tweet actual
