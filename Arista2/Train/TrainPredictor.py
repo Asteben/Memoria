@@ -11,8 +11,10 @@ from keras.layers import (LSTM, Dense, Activation, BatchNormalization, Dropout, 
 
 print (tf.__version__)
 
+look_back  = 200
+k = 60
 Seconds = 60
-emergency = 'Covid'
+emergency = 'Hurricane'
 
 def load_data ( inputPath ):
     cols = ["Unix", "Quantity"]
@@ -27,9 +29,6 @@ dataset = raw_dataset.copy()
 dataset.tail()
 dataset.isna().sum()
 df_train = dataset.dropna()
-
-look_back  = 200
-k = 60
 
 X_train = df_train["Unix"]
 Y_train = df_train["Quantity"]

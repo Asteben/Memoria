@@ -24,7 +24,7 @@ def load_data ( inputPath ):
 look_back  = 200
 k = 60
 Seconds = 60
-emergency = 'Covid'
+emergency = 'Hurricane'
 
 
 dataset_path_test = f'../Data/Gby_data/{Seconds}s/Test{emergency}.csv'
