@@ -1,7 +1,10 @@
 import numpy as np
+import tensorflow as tf
+
+a = [1,2,3,4,5,6]
+b = [2,3,4,5,6,7]
+
+loss = tf.keras.losses.mean_squared_error(a, b)
 
 
-a = [[1,2,3],[4,5,6]]
-a = np.array(a)
-a= np.concatenate(a)
-print(a[0:1+1])
+print (loss.numpy())

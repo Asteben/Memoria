@@ -1,9 +1,9 @@
 from csv import DictReader, DictWriter
 
 
-Seconds = 60 #Cantidad de segundos del bloque de tiempo
-emergency = 'Hurricane'
-Target = 'Test'
+Seconds = 90 #Cantidad de segundos del bloque de tiempo
+emergency = 'Covid'
+Target = 'Train'
 
 with open(f'../Data/{Target}_data/{Target}{emergency}.csv', 'r', encoding="utf-8") as csv_obj:
     csv = DictReader(x.replace('\0', '') for x in csv_obj)

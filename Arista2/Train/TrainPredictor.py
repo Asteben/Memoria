@@ -12,9 +12,9 @@ from keras.layers import (LSTM, Dense, Activation, BatchNormalization, Dropout, 
 print (tf.__version__)
 
 look_back  = 200
-k = 60
-Seconds = 60
-emergency = 'Hurricane'
+k = 90
+Seconds = 30
+emergency = 'Earthquake'
 
 def load_data ( inputPath ):
     cols = ["Unix", "Quantity"]
@@ -51,9 +51,7 @@ model.add(LSTM(200, input_shape=(look_back, 1)))
 model.add(Dense(100, activation='relu'))
 model.add(Dense(k))
 
-
 model.compile(loss='mse', optimizer='adam')
-model.fit(final,epochs=25, verbose=2)
+model.fit(final,epochs=30, verbose=2)
 
-
-model.save(f'../Models/LSTM_models/{emergency}/{look_back}LB-{k}K')
+model.save(f'../Models/LSTM_models_2/{emergency}/{Seconds}s/{look_back}LB-{k}K')

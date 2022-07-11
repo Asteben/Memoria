@@ -6,8 +6,8 @@ import matplotlib . pyplot as plt
 from sklearn import metrics
 
 look_back  = 200
-k = 60
-Seconds = 60
+k = 90
+Seconds = 30
 
 def load_data ( inputPath ):
     cols = ["Unix", "Quantity"]
@@ -65,14 +65,17 @@ def Predecir(test_data_gby,df,modelo):
         current_batch = np.reshape(next_eval_batch,(1, look_back, 1))
         i = i + 1
     test_predictions = np.concatenate(np.array(test_predictions))
-    
     X_test = df_test["Unix"]
     Y_test = df_test["Quantity"]
     x_pred = np.arange(X_test.iloc[look_back],(len(test_predictions)*Seconds)+X_test.iloc[look_back],Seconds)
+    largo = len(test_predictions)
+    error_mse = tf.keras.losses.mean_squared_error(Y_test.iloc[look_back:look_back+largo], test_predictions)
+    print (f'Error cuadratico medio: {error_mse.numpy()}')
     fig, ax = plt.subplots(1, 1, figsize=(15, 5))
     ax.plot(X_test,Y_test, lw=3, c='y', label='test data')
     ax.plot(x_pred,test_predictions, lw=3, c='r',linestyle = ':', label='predictions')
     ax.legend(loc="lower left")
+    ax.set(xlabel="Tiempo", ylabel="Número de tweets")
     plt.show()
 
 corona_data=pd.read_csv('Data/Test_data/TestCovid.csv',names=['created_at','text','label'])
@@ -102,12 +105,12 @@ ytest_classify = df_test["labelnum"]
 NLP_path = 'Models/Classifier_models/NLP'
 Classifier_path = 'Models/Classifier_models/Classifier'
 
-cv = joblib.load(f'{NLP_path}/TfidfVectorizer.pkl')
-clf = joblib.load(f'{Classifier_path}/NaiveBayes-tfidf.pkl')
+cv = joblib.load(f'{NLP_path}/CountVectorizer.pkl')
+clf = joblib.load(f'{Classifier_path}/NaiveBayes-CV.pkl')
 
-model_covid = tf.keras.models.load_model(f'Models/LSTM_models/Covid/{look_back}LB-{k}K')
-model_earthquake = tf.keras.models.load_model(f'Models/LSTM_models/Earthquake/{look_back}LB-{k}K')
-model_hurricane = tf.keras.models.load_model(f'Models/LSTM_models/Hurricane/{look_back}LB-{k}K')
+model_covid = tf.keras.models.load_model(f'Models/LSTM_models_2/Covid/{Seconds}s/{look_back}LB-{k}K')
+model_earthquake = tf.keras.models.load_model(f'Models/LSTM_models_2/Earthquake/{Seconds}s/{look_back}LB-{k}K')
+model_hurricane = tf.keras.models.load_model(f'Models/LSTM_models_2/Hurricane/{Seconds}s/{look_back}LB-{k}K')
 
 covid_data_classified = []
 earthquake_data_classified = []
@@ -143,5 +146,6 @@ print('\n The value of Precision', metrics.precision_score(ytest_classify,all_da
 print('\n The value of Recall', metrics.recall_score(ytest_classify,all_data_classified,average='macro'))
 
 covid_data_pred = Predecir(f'Data/Gby_data/{Seconds}s/TestCovid.csv',df_covid,model_covid)
-earthquake_data_pred = Predecir(f'Data/Gby_data/{Seconds}s/TestEarthquake.csv',df_earthquake,model_earthquake)
 hurricane_data_pred = Predecir(f'Data/Gby_data/{Seconds}s/TestHurricane.csv',df_hurricane,model_hurricane)
+earthquake_data_pred = Predecir(f'Data/Gby_data/{Seconds}s/TestEarthquake.csv',df_earthquake,model_earthquake)
+
